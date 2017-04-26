@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "918897318926",
+    "firebase_url": "https://zhihu-cc40c.firebaseio.com",
+    "project_id": "zhihu-cc40c",
+    "storage_bucket": "zhihu-cc40c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918897318926:android:122642bcd46afc4a",
+        "android_client_info": {
+          "package_name": "com.example.administrator.zhihu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918897318926-0datbegsv1c81q6qddad5gtaeugr0lpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfOzipr8TRqdn1UDtXTuZyd8Nr6S83A5o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

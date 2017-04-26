@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.loopj.android.image.SmartImageView
+                android:id="@+id/iv_theme_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/tv_theme_item_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_theme_item"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_margin="8dp"
+                android:id="@+id/tv_theme_item_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="3"
+                android:layout_below="@id/tv_theme_item_theme"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>
