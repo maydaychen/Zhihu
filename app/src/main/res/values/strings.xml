@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ZhihuDaily</string>
     <string name="title_activity_main">ZhihuDaily</string>
-    <string name="today_hot">hot_news</string>
+    <string name="today_hot">今日热门</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -23,7 +23,7 @@
         based on your message history
     </string>
 
-    <string name="pref_title_display_name">username</string>
+    <string name="pref_title_display_name">用户名</string>
     <string name="pref_default_display_name">陈译</string>
 
     <string name="pref_title_add_friends_to_messages">添加好友到聊天栏</string>
@@ -70,7 +70,7 @@
     <string name="pref_ringtone_silent">静音</string>
 
     <string name="pref_title_vibrate">震动</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">登录</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">账号</string>
@@ -82,8 +82,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_theme_content">ThemeContentActivity</string>
-    <string name="theme_daily">themeDaily</string>
-    <string name="my_collection">myCollection</string>
-    <string name="offline_download">offline_download</string>
+    <string name="title_activity_theme_content">主题内容</string>
+    <string name="theme_daily">主题日报</string>
+    <string name="my_collection">我的收藏</string>
+    <string name="offline_download">离线下载</string>
 </resources>
