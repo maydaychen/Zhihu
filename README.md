@@ -1,6 +1,5 @@
 # Zhihu
 模仿知乎日报，不用来盈利，只用来练习
-[项目相关](https://github.com/maydaychen/Zhihu)
 [接口信息](https://github.com/izzyleung/ZhihuDailyPurify/wiki/知乎日报-API-分析)
 
 ##实现功能
@@ -16,12 +15,13 @@
 5.额，，，还没想好- -
 
 
-##用到的部分框架
+##用到的部分框架及平台
 1.retrolambda
 2.butterknife
 3.retrofit2
 4.rxjava
 5.firebase
+
 ##部分截图
 
 ![S70321-143017.jpg](http://upload-images.jianshu.io/upload_images/1987727-8806224078fea45f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
