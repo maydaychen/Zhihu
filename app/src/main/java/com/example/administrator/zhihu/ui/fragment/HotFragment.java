@@ -3,44 +3,33 @@ package com.example.administrator.zhihu.ui.fragment;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.administrator.zhihu.Config;
 import com.example.administrator.zhihu.R;
 import com.example.administrator.zhihu.adapter.HotAdapter;
 import com.example.administrator.zhihu.bean.StoryBean;
+import com.example.administrator.zhihu.http.HttpMethods;
+import com.example.administrator.zhihu.http.ProgressSubscriber;
+import com.example.administrator.zhihu.http.SubscriberOnNextListener;
 import com.example.administrator.zhihu.ui.activity.ContentActivity;
-import com.example.administrator.zhihu.utils;
 import com.google.gson.Gson;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Cache;
 import okhttp3.CacheControl;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class HotFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
@@ -48,7 +37,7 @@ public class HotFragment extends Fragment {
     @BindView(R.id.rv_hot)
     RecyclerView rvHot;
 
-    // TODO: Rename and change types of parameters
+    private SubscriberOnNextListener<StoryBean> getLatestOnNext;
     private String mParam1;
     private String mParam2;
     RecyclerView.LayoutManager layoutManager;
@@ -63,44 +52,45 @@ public class HotFragment extends Fragment {
     CacheControl my_cache;
     private Gson mGson = new Gson();
 
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            String data = msg.obj.toString();
-            Log.d(Config.TAG, "handleMessage" + data);
-            switch (msg.what) {
-                case 0:
-                    try {
-                        StoryBean storyBean = mGson.fromJson(data, StoryBean.class);
-                        List<Map<String, Object>> list = new ArrayList<>();
-                        for (int j = 0; j < storyBean.getStories().size(); j++) {
-                            Map<String, Object> map = new HashMap<>();
-                            if (null != storyBean.getStories().get(j).getImages()) {
-                                map.put("images", storyBean.getStories().get(j).getImages().get(0));
-                            }
-                            map.put("title", storyBean.getStories().get(j).getTitle());
-                            list.add(map);
-                        }
-
-                        //创建并设置Adapter
-                        hotAdapter = new HotAdapter(list);
-                        rvHot.setAdapter(hotAdapter);
-
-                        hotAdapter.setOnItemClickListener((view, data1) -> {
-                            Intent intent = new Intent(getActivity(), ContentActivity.class);
-                            intent.putExtra("ID", storyBean.getStories().get(data1).getId());
-                            startActivity(intent);
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-
-                case 1:
-                    break;
-            }
-        }
-    };
+//
+//    Handler handler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            String data = msg.obj.toString();
+//            Log.d(Config.TAG, "handleMessage" + data);
+//            switch (msg.what) {
+//                case 0:
+//                    try {
+//                        StoryBean storyBean = mGson.fromJson(data, StoryBean.class);
+//                        List<Map<String, Object>> list = new ArrayList<>();
+//                        for (int j = 0; j < storyBean.getStories().size(); j++) {
+//                            Map<String, Object> map = new HashMap<>();
+//                            if (null != storyBean.getStories().get(j).getImages()) {
+//                                map.put("images", storyBean.getStories().get(j).getImages().get(0));
+//                            }
+//                            map.put("title", storyBean.getStories().get(j).getTitle());
+//                            list.add(map);
+//                        }
+//
+//                        //创建并设置Adapter
+//                        hotAdapter = new HotAdapter(list);
+//                        rvHot.setAdapter(hotAdapter);
+//
+//                        hotAdapter.setOnItemClickListener((view, data1) -> {
+//                            Intent intent = new Intent(getActivity(), ContentActivity.class);
+//                            intent.putExtra("ID", storyBean.getStories().get(data1).getId());
+//                            startActivity(intent);
+//                        });
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    break;
+//
+//                case 1:
+//                    break;
+//            }
+//        }
+//    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -164,12 +154,33 @@ public class HotFragment extends Fragment {
             }
         });
 
-        CacheControl.Builder builder =
-                new CacheControl.Builder().
-                        maxAge(6, TimeUnit.SECONDS).//这个是控制缓存的最大生命时间
-                        maxStale(1, TimeUnit.SECONDS);//这个是控制缓存的过时时间
+        getLatestOnNext = storyBean -> {
+            List<Map<String, Object>> list = new ArrayList<>();
+            for (StoryBean.StoriesBean othersBeen : storyBean.getStories()) {
+                Map<String, Object> map = new HashMap<>();
+                if (null != othersBeen.getImages()) {
+                    map.put("images", othersBeen.getImages().get(0));
+                }
+                map.put("title", othersBeen.getTitle());
+                list.add(map);
+            }
+            //创建并设置Adapter
+            hotAdapter = new HotAdapter(list);
+            rvHot.setAdapter(hotAdapter);
 
-        my_cache = builder.build();
+            hotAdapter.setOnItemClickListener((view, data1) -> {
+                Intent intent = new Intent(getActivity(), ContentActivity.class);
+                intent.putExtra("ID", storyBean.getStories().get(data1).getId());
+                startActivity(intent);
+            });
+        };
+
+//        CacheControl.Builder builder =
+//                new CacheControl.Builder().
+//                        maxAge(6, TimeUnit.SECONDS).//这个是控制缓存的最大生命时间
+//                        maxStale(1, TimeUnit.SECONDS);//这个是控制缓存的过时时间
+//
+//        my_cache = builder.build();
     }
 
     private int findMax(int[] lastPositions) {
@@ -181,71 +192,73 @@ public class HotFragment extends Fragment {
         }
         return max;
     }
-
-    Interceptor interceptor = chain -> {
-        Request request = chain.request();
-
-        if (utils.isNetworkAvailable(getActivity())) {
-            Response response = chain.proceed(request);
-            int maxAge = 6; // 在线缓存在1分钟内可读取
-            return response.newBuilder()
-                    .removeHeader("Pragma")
-                    .removeHeader("Cache-Control")
-                    .header("Cache-Control", "public, max-age=" + maxAge)
-                    .build();
-        } else {
-            request = request.newBuilder()
-                    .cacheControl(CacheControl.FORCE_CACHE)//或者直接用系统的
-                    .build();
-
-            Response response = chain.proceed(request);
-            //下面注释的部分设置也没有效果，因为在上面已经设置了
-            return response.newBuilder()
-                    .removeHeader("Pragma")
-                    .removeHeader("Cache-Control")
-                    .header("Cache-Control", "public, only-if-cached, max-stale=50")
-                    .build();
-        }
-    };
+//
+//    Interceptor interceptor = chain -> {
+//        Request request = chain.request();
+//
+//        if (utils.isNetworkAvailable(getActivity())) {
+//            Response response = chain.proceed(request);
+//            int maxAge = 6; // 在线缓存在1分钟内可读取
+//            return response.newBuilder()
+//                    .removeHeader("Pragma")
+//                    .removeHeader("Cache-Control")
+//                    .header("Cache-Control", "public, max-age=" + maxAge)
+//                    .build();
+//        } else {
+//            request = request.newBuilder()
+//                    .cacheControl(CacheControl.FORCE_CACHE)//或者直接用系统的
+//                    .build();
+//
+//            Response response = chain.proceed(request);
+//            //下面注释的部分设置也没有效果，因为在上面已经设置了
+//            return response.newBuilder()
+//                    .removeHeader("Pragma")
+//                    .removeHeader("Cache-Control")
+//                    .header("Cache-Control", "public, only-if-cached, max-stale=50")
+//                    .build();
+//        }
+//    };
 
     private void initRequest() {
-        //设置缓存 /data/data/包名下
-//        File cacheDirectory = new File(CacheActivity.this.getCacheDir(), "okthhpqq");
-        //设置到sd卡里面
-        File cacheDirectory = new File(getActivity().getExternalCacheDir(), "0810");
-        Cache cache = new Cache(cacheDirectory, 10 * 1024 * 1024);
-
-//        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-//        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(20, TimeUnit.SECONDS)//请求超时时间
-                .cache(cache)//设置缓存
-                .addInterceptor(interceptor)
-                .addNetworkInterceptor(interceptor)
-                //.addInterceptor(httpLoggingInterceptor)
-                .build();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .cacheControl(my_cache)
-                .build();
-
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                handler.sendMessage(handler.obtainMessage(0, "数据请求失败"));
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String data = response.body().string();
-                if (response.isSuccessful()) {
-                    handler.sendMessage(handler.obtainMessage(0, data));
-                } else {
-                    handler.sendMessage(handler.obtainMessage(0, "数据请求失败"));
-                }
-            }
-        });
+//        //设置缓存 /data/data/包名下
+////        File cacheDirectory = new File(CacheActivity.this.getCacheDir(), "okthhpqq");
+//        //设置到sd卡里面
+//        File cacheDirectory = new File(getActivity().getExternalCacheDir(), "0810");
+//        Cache cache = new Cache(cacheDirectory, 10 * 1024 * 1024);
+//
+////        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+////        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//
+//        okHttpClient = new OkHttpClient.Builder()
+//                .connectTimeout(20, TimeUnit.SECONDS)//请求超时时间
+//                .cache(cache)//设置缓存
+//                .addInterceptor(interceptor)
+//                .addNetworkInterceptor(interceptor)
+//                //.addInterceptor(httpLoggingInterceptor)
+//                .build();
+//
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .cacheControl(my_cache)
+//                .build();
+//
+//        okHttpClient.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                handler.sendMessage(handler.obtainMessage(0, "数据请求失败"));
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String data = response.body().string();
+//                if (response.isSuccessful()) {
+//                    handler.sendMessage(handler.obtainMessage(0, data));
+//                } else {
+//                    handler.sendMessage(handler.obtainMessage(0, "数据请求失败"));
+//                }
+//            }
+//        });
+        HttpMethods.getInstance().getLatest(
+                new ProgressSubscriber<>(getLatestOnNext, getActivity()));
     }
 }

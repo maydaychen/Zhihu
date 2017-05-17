@@ -8,23 +8,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
-import com.example.administrator.zhihu.Model.NewsModel;
 import com.example.administrator.zhihu.R;
 import com.example.administrator.zhihu.bean.CommentBean;
+import com.example.administrator.zhihu.bean.ContentBean;
 import com.example.administrator.zhihu.http.HttpMethods;
-import com.example.administrator.zhihu.http.NewsListener;
-import com.example.administrator.zhihu.http.NewsModelImpl;
 import com.example.administrator.zhihu.http.ProgressSubscriber;
 import com.example.administrator.zhihu.http.SubscriberOnNextListener;
 import com.example.administrator.zhihu.utils;
 import com.loopj.android.image.SmartImageView;
 
-import org.json.JSONObject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ContentActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, NewsListener {
+public class ContentActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
 
     @BindView(R.id.sv_content)
     SmartImageView svContent;
@@ -33,10 +29,8 @@ public class ContentActivity extends AppCompatActivity implements Toolbar.OnMenu
     @BindView(R.id.tb_content)
     Toolbar tbContent;
 
-    String url1 = "http://news-at.zhihu.com/api/4/news/";
-    JSONObject json = null;
-    private NewsModel weatherModel;
     private SubscriberOnNextListener<CommentBean> getTopMovieOnNext;
+    private SubscriberOnNextListener<ContentBean> getContentOnNext;
 
 
     @Override
@@ -51,20 +45,32 @@ public class ContentActivity extends AppCompatActivity implements Toolbar.OnMenu
     public void initDate() {
         Intent intent = getIntent();
         int ID = intent.getIntExtra("ID", 0);
-        url1 += ID;
-        weatherModel.getWeather(ContentActivity.this, this, url1);
+        HttpMethods.getInstance().getContent(
+                new ProgressSubscriber<>(getContentOnNext, this), ID + "");
+
         HttpMethods.getInstance().getComment(
                 new ProgressSubscriber<>(getTopMovieOnNext, this), ID + "");
     }
 
     public void initView() {
         tbContent.setTitle("");
-        weatherModel = new NewsModelImpl();
         setSupportActionBar(tbContent);
         tbContent.setNavigationIcon(R.drawable.ic_keyboard_backspace_white_24dp);
         tbContent.setNavigationOnClickListener(v -> finish());
         tbContent.setOnMenuItemClickListener(this);
         getTopMovieOnNext = commentBean -> {
+        };
+        getContentOnNext = s -> {
+            try {
+                wvContent.getSettings().setJavaScriptEnabled(true);
+                svContent.setImageUrl(s.getImage());
+                String css = "<link rel=\"stylesheet\" href=\"" + s.getCss().get(0) + "\" type=\"text/css\">";
+                String html = "<html><head>" + css + "</head><body>" + s.getBody() + "</body></html>";
+                html = html.replace("<div class=\"img-place-holder\">", "");
+                wvContent.loadDataWithBaseURL("x-data://base", html, "text/html", "UTF-8", null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         };
     }
 
@@ -88,28 +94,5 @@ public class ContentActivity extends AppCompatActivity implements Toolbar.OnMenu
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return true;
-    }
-
-    @Override
-    public void onSuccess(String data) {
-        try {
-            json = new JSONObject(data);
-
-            wvContent.getSettings().setJavaScriptEnabled(true);
-//                    wvContent.loadDataWithBaseURL("about:blank",json.getString("body")+json.getJSONArray("css").get(0), "text/html", "utf-8",null);
-            svContent.setImageUrl(json.optString("image"));
-
-            String css = "<link rel=\"stylesheet\" href=\"" + json.getJSONArray("css").get(0) + "\" type=\"text/css\">";
-            String html = "<html><head>" + css + "</head><body>" + json.getString("body") + "</body></html>";
-            html = html.replace("<div class=\"img-place-holder\">", "");
-            wvContent.loadDataWithBaseURL("x-data://base", html, "text/html", "UTF-8", null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onFaile() {
-
     }
 }

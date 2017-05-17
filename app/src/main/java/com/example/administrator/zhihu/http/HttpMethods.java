@@ -1,6 +1,8 @@
 package com.example.administrator.zhihu.http;
 
 import com.example.administrator.zhihu.bean.CommentBean;
+import com.example.administrator.zhihu.bean.ContentBean;
+import com.example.administrator.zhihu.bean.StoryBean;
 import com.example.administrator.zhihu.bean.ThemeBean;
 
 import java.util.concurrent.TimeUnit;
@@ -67,6 +69,24 @@ public class HttpMethods {
 
     public void getComment(Subscriber<CommentBean> subscriber, String id) {
         movieService.getComment(id)
+//                .map(new HttpResultFunc<>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void getLatest(Subscriber<StoryBean> subscriber) {
+        movieService.getLatest()
+//                .map(new HttpResultFunc<>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void getContent(Subscriber<ContentBean> subscriber, String id) {
+        movieService.getContent(id)
 //                .map(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
@@ -21,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.administrator.zhihu.R;
 import com.example.administrator.zhihu.ui.fragment.HotFragment;
@@ -61,7 +61,9 @@ public class MainActivity extends AppCompatActivity
                 int id = item.getItemId();
                 switch (id) {
                     case R.id.action_unread:
-                        Toast.makeText(MainActivity.this, "hihihihi", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"));
+                        intent.putExtra("sms_body", "我正在使用知乎.日报，要不你也来试试？");
+                        startActivity(intent);
                         break;
                 }
             }
