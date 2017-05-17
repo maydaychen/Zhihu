@@ -59,6 +59,7 @@ public class ContentActivity extends AppCompatActivity implements Toolbar.OnMenu
         tbContent.setNavigationOnClickListener(v -> finish());
         tbContent.setOnMenuItemClickListener(this);
         getTopMovieOnNext = commentBean -> {
+
         };
         getContentOnNext = s -> {
             try {

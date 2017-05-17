@@ -12,8 +12,10 @@ import com.loopj.android.image.SmartImageView;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Created by Administrator on 2016/7/14.
+ *
  */
 public class HotAdapter extends RecyclerView.Adapter<HotAdapter.ViewHolder> implements View.OnClickListener {
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
@@ -41,9 +43,7 @@ public class HotAdapter extends RecyclerView.Adapter<HotAdapter.ViewHolder> impl
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.mTextView.setText((String) mData.get(position).get("title"));
-        if (mData.get(position).get("images") != null) {
-            viewHolder.imageView.setImageUrl((String) mData.get(position).get("images"));
-        }
+        viewHolder.imageView.setImageUrl((String) mData.get(position).get("images"));
         viewHolder.itemView.setTag(position);
     }
 

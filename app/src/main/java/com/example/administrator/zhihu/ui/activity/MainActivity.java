@@ -175,7 +175,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            Intent data=new Intent(Intent.ACTION_SENDTO);
+            data.setData(Uri.parse("mailto:1803844179@qq.com"));
+            data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
+            data.putExtra(Intent.EXTRA_TEXT, "这是内容");
+            startActivity(data);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -198,13 +202,16 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    public static void show(final Context context) {
+    public void show(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage("即将进入所在商店进行评价，确定么？");
         builder.setTitle("知乎日报");
 
         builder.setPositiveButton("确认", (dialog, which) -> {
-            dialog.dismiss();
+            Uri uri = Uri.parse("market://details?id=" + "com.example.administrator.zhihu");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         });
 
         builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
