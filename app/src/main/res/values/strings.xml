@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">ZhihuDaily</string>
-    <string name="title_activity_main">ZhihuDaily</string>
+    <string name="app_name">每日一报</string>
+    <string name="title_activity_main">每日一报</string>
     <string name="today_hot">今日热门</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -86,4 +86,5 @@
     <string name="theme_daily">主题日报</string>
     <string name="my_collection">我的收藏</string>
     <string name="offline_download">离线下载</string>
+    <string name="app_derect_share">直接分享</string>
 </resources>

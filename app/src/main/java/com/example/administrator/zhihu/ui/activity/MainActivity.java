@@ -26,9 +26,11 @@ import android.widget.ImageView;
 import com.example.administrator.zhihu.R;
 import com.example.administrator.zhihu.ui.fragment.HotFragment;
 import com.example.administrator.zhihu.ui.fragment.ThemesFragment;
+import com.example.administrator.zhihu.utils;
 import com.github.rubensousa.floatingtoolbar.FloatingToolbar;
 
 import butterknife.ButterKnife;
+import cn.sharesdk.framework.ShareSDK;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FloatingToolbar.ItemClickListener, Toolbar.OnMenuItemClickListener {
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity
                 switch (id) {
                     case R.id.action_unread:
                         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"));
-                        intent.putExtra("sms_body", "我正在使用知乎.日报，要不你也来试试？");
+                        intent.putExtra("sms_body", "我正在使用每日一报，要不你也来试试？");
                         startActivity(intent);
                         break;
                 }
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         });
+        ShareSDK.initSDK(this);
     }
 
     @Override
@@ -159,27 +162,32 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, new HotFragment()).commit();
-            toolbar.setTitle(getResources().getText(R.string.today_hot));
-        } else if (id == R.id.nav_gallery) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, new ThemesFragment()).commit();
-            toolbar.setTitle(getResources().getText(R.string.theme_daily));
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-            show(MainActivity.this);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-            Intent data=new Intent(Intent.ACTION_SENDTO);
-            data.setData(Uri.parse("mailto:1803844179@qq.com"));
-            data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
-            data.putExtra(Intent.EXTRA_TEXT, "这是内容");
-            startActivity(data);
+        switch (id) {
+            case R.id.nav_camera:
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, new HotFragment()).commit();
+                toolbar.setTitle(getResources().getText(R.string.today_hot));
+                break;
+            case R.id.nav_gallery:
+                FragmentManager themeFragmentManager = getFragmentManager();
+                themeFragmentManager.beginTransaction().replace(R.id.fragment_container, new ThemesFragment()).commit();
+                toolbar.setTitle(getResources().getText(R.string.theme_daily));
+                break;
+            case R.id.nav_slideshow:
+                break;
+            case R.id.nav_manage:
+                show(MainActivity.this);
+                break;
+            case R.id.nav_share:
+                utils.showShare(this);
+                break;
+            case R.id.nav_send:
+                Intent data = new Intent(Intent.ACTION_SENDTO);
+                data.setData(Uri.parse("mailto:1803844179@qq.com"));
+                data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
+                data.putExtra(Intent.EXTRA_TEXT, "这是内容");
+                startActivity(data);
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -8,22 +8,20 @@
 
 package cn.sharesdk.onekeyshare;
 
+import static com.mob.tools.utils.BitmapHelper.captureView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-
-import com.mob.tools.utils.ResHelper;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
-
-import static com.mob.tools.utils.BitmapHelper.captureView;
+import com.mob.tools.utils.R;
 
 /**
 * 快捷分享的入口
@@ -34,7 +32,7 @@ public class OnekeyShare {
 	private HashMap<String, Object> params;
 
 	public OnekeyShare() {
-		params = new HashMap<>();
+		params = new HashMap<String, Object>();
 		params.put("customers", new ArrayList<CustomerLogo>());
 		params.put("hiddenPlatforms", new HashMap<String, String>());
 	}
@@ -156,7 +154,7 @@ public class OnekeyShare {
 
 	/** 返回操作回调 */
 	public PlatformActionListener getCallback() {
-		return ResHelper.forceCast(params.get("callback"));
+		return R.forceCast(params.get("callback"));
 	}
 
 	/** 设置用于分享过程中，根据不同平台自定义分享内容的回调 */
@@ -166,7 +164,7 @@ public class OnekeyShare {
 
 	/** 自定义不同平台分享不同内容的回调 */
 	public ShareContentCustomizeCallback getShareContentCustomizeCallback() {
-		return ResHelper.forceCast(params.get("customizeCallback"));
+		return R.forceCast(params.get("customizeCallback"));
 	}
 
 	/** 设置自己图标和点击事件，可以重复调用添加多次 */
@@ -175,7 +173,7 @@ public class OnekeyShare {
 		cl.logo = logo;
 		cl.label = label;
 		cl.listener = ocl;
-		ArrayList<CustomerLogo> customers = ResHelper.forceCast(params.get("customers"));
+		ArrayList<CustomerLogo> customers = R.forceCast(params.get("customers"));
 		customers.add(cl);
 	}
 
@@ -198,7 +196,7 @@ public class OnekeyShare {
 
 	/** 添加一个隐藏的platform */
 	public void addHiddenPlatform(String platform) {
-		HashMap<String, String> hiddenPlatforms = ResHelper.forceCast(params.get("hiddenPlatforms"));
+		HashMap<String, String> hiddenPlatforms = R.forceCast(params.get("hiddenPlatforms"));
 		hiddenPlatforms.put(platform, platform);
 	}
 
@@ -239,7 +237,7 @@ public class OnekeyShare {
 
 		int iTheme = 0;
 		try {
-			iTheme = ResHelper.parseInt(String.valueOf(shareParamsMap.remove("theme")));
+			iTheme = R.parseInt(String.valueOf(shareParamsMap.remove("theme")));
 		} catch (Throwable t) {}
 		OnekeyShareTheme theme = OnekeyShareTheme.fromValue(iTheme);
 		OnekeyShareThemeImpl themeImpl = theme.getImpl();

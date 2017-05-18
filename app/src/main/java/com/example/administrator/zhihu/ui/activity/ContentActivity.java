@@ -79,7 +79,7 @@ public class ContentActivity extends AppCompatActivity implements Toolbar.OnMenu
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_share:
-                utils.showShare(ContentActivity.this);
+                utils.showShare(this);
                 break;
             case R.id.action_star:
                 break;

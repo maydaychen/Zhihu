@@ -28,7 +28,7 @@ import cn.sharesdk.framework.Platform.ShareParams;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 
-import com.mob.tools.utils.ResHelper;
+import com.mob.tools.utils.R;
 import com.mob.tools.utils.UIHandler;
 
 /** 快捷分享的主题样式的实现父类 */
@@ -262,7 +262,7 @@ public abstract class OnekeyShareThemeImpl implements PlatformActionListener, Ca
 					}
 				}
 			} else {
-				Bitmap viewToShare = ResHelper.forceCast(shareParamsMap.get("viewToShare"));
+				Bitmap viewToShare = R.forceCast(shareParamsMap.get("viewToShare"));
 				if (viewToShare != null && !viewToShare.isRecycled()) {
 					shareType = Platform.SHARE_IMAGE;
 					if (shareParamsMap.containsKey("url") && !TextUtils.isEmpty(shareParamsMap.get("url").toString())) {
@@ -299,10 +299,10 @@ public abstract class OnekeyShareThemeImpl implements PlatformActionListener, Ca
 		}
 
 		try {
-			String imagePath = ResHelper.forceCast(shareParamsMap.get("imagePath"));
-			Bitmap viewToShare = ResHelper.forceCast(shareParamsMap.get("viewToShare"));
+			String imagePath = R.forceCast(shareParamsMap.get("imagePath"));
+			Bitmap viewToShare = R.forceCast(shareParamsMap.get("viewToShare"));
 			if (TextUtils.isEmpty(imagePath) && viewToShare != null && !viewToShare.isRecycled()) {
-				String path = ResHelper.getCachePath(plat.getContext(), "screenshot");
+				String path = R.getCachePath(plat.getContext(), "screenshot");
 				File ss = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
 				FileOutputStream fos = new FileOutputStream(ss);
 				viewToShare.compress(CompressFormat.JPEG, 100, fos);
@@ -322,7 +322,7 @@ public abstract class OnekeyShareThemeImpl implements PlatformActionListener, Ca
 	private void toast(final String resOrName) {
 		UIHandler.sendEmptyMessage(0, new Callback() {
 			public boolean handleMessage(Message msg) {
-				int resId = ResHelper.getStringRes(context, resOrName);
+				int resId = R.getStringRes(context, resOrName);
 				if (resId > 0) {
 					Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
 				} else {
@@ -374,7 +374,7 @@ public abstract class OnekeyShareThemeImpl implements PlatformActionListener, Ca
 		switch (msg.arg1) {
 			case 1: {
 				// 成功
-				int resId = ResHelper.getStringRes(context, "ssdk_oks_share_completed");
+				int resId = R.getStringRes(context, "ssdk_oks_share_completed");
 				if (resId > 0) {
 					toast(context.getString(resId));
 				}

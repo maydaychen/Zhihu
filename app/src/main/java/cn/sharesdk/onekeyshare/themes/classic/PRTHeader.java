@@ -8,6 +8,7 @@
 
 package cn.sharesdk.onekeyshare.themes.classic;
 
+import static com.mob.tools.utils.R.getStringRes;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
@@ -17,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.mob.tools.utils.ResHelper;
+import com.mob.tools.utils.R;
 
 /** 下拉刷新的头部控件  */
 public class PRTHeader extends LinearLayout {
@@ -31,7 +32,7 @@ public class PRTHeader extends LinearLayout {
 
 	public PRTHeader(Context context) {
 		super(context);
-		int[] size = ResHelper.getScreenSize(context);
+		int[] size = R.getScreenSize(context);
 		float screenWidth = size[0] < size[1] ? size[0] : size[1];
 		float ratio = screenWidth / DESIGN_SCREEN_WIDTH;
 
@@ -43,7 +44,7 @@ public class PRTHeader extends LinearLayout {
 		addView(llInner, lp);
 
 		ivArrow = new RotateImageView(context);
-		int resId = ResHelper.getBitmapRes(context, "ssdk_oks_ptr_ptr");
+		int resId = R.getBitmapRes(context, "ssdk_oks_ptr_ptr");
 		if (resId > 0) {
 			ivArrow.setImageResource(resId);
 		}
@@ -55,7 +56,7 @@ public class PRTHeader extends LinearLayout {
 		llInner.addView(ivArrow, lp);
 
 		pbRefreshing = new ProgressBar(context);
-		resId = ResHelper.getBitmapRes(context, "ssdk_oks_classic_progressbar");
+		resId = R.getBitmapRes(context, "ssdk_oks_classic_progressbar");
 		Drawable pbdrawable = context.getResources().getDrawable(resId);
 		pbRefreshing.setIndeterminateDrawable(pbdrawable);
 		llInner.addView(pbRefreshing, lp);
@@ -85,12 +86,12 @@ public class PRTHeader extends LinearLayout {
 		}
 
 		if (percent < 100) {
-			int resId = ResHelper.getStringRes(getContext(), "ssdk_oks_pull_to_refresh");
+			int resId = getStringRes(getContext(), "ssdk_oks_pull_to_refresh");
 			if (resId > 0) {
 				tvHeader.setText(resId);
 			}
 		} else {
-			int resId = ResHelper.getStringRes(getContext(), "ssdk_oks_release_to_refresh");
+			int resId = getStringRes(getContext(), "ssdk_oks_release_to_refresh");
 			if (resId > 0) {
 				tvHeader.setText(resId);
 			}
@@ -100,7 +101,7 @@ public class PRTHeader extends LinearLayout {
 	public void onRequest() {
 		ivArrow.setVisibility(View.GONE);
 		pbRefreshing.setVisibility(View.VISIBLE);
-		int resId = ResHelper.getStringRes(getContext(), "ssdk_oks_refreshing");
+		int resId = getStringRes(getContext(), "ssdk_oks_refreshing");
 		if (resId > 0) {
 			tvHeader.setText(resId);
 		}

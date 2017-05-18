@@ -8,8 +8,6 @@
 
 package cn.sharesdk.onekeyshare.themes.classic;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -21,11 +19,14 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.onekeyshare.CustomerLogo;
 
 import com.mob.tools.gui.ViewPagerAdapter;
-import com.mob.tools.utils.ResHelper;
+import com.mob.tools.utils.R;
+
+import java.util.ArrayList;
+
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.onekeyshare.CustomerLogo;
 
 /** 九宫格的适配器抽象类 */
 public abstract class PlatformPageAdapter extends ViewPagerAdapter implements OnClickListener {
@@ -90,8 +91,8 @@ public abstract class PlatformPageAdapter extends ViewPagerAdapter implements On
 			convertView = createPanel(parent.getContext());
 		}
 
-		LinearLayout llPanel = ResHelper.forceCast(convertView);
-		LinearLayout[] llCells = ResHelper.forceCast(llPanel.getTag());
+		LinearLayout llPanel = R.forceCast(convertView);
+		LinearLayout[] llCells = R.forceCast(llPanel.getTag());
 		refreshPanel(llCells, cells[index]);
 		return convertView;
 	}
@@ -104,7 +105,7 @@ public abstract class PlatformPageAdapter extends ViewPagerAdapter implements On
 		int lineCount = panelHeight / cellHeight;
 		LinearLayout[] llCells = new LinearLayout[lineCount * lineSize];
 		llPanel.setTag(llCells);
-		int cellBack = ResHelper.getBitmapRes(context, "ssdk_oks_classic_platform_cell_back");
+		int cellBack = R.getBitmapRes(context, "ssdk_oks_classic_platform_cell_back");
 		LinearLayout.LayoutParams lp;
 		for (int i = 0; i < lineCount; i++) {
 			LinearLayout llLine = new LinearLayout(context);
@@ -151,11 +152,11 @@ public abstract class PlatformPageAdapter extends ViewPagerAdapter implements On
 	}
 
 	private void refreshPanel(LinearLayout[] llCells, Object[] logos) {
-		int cellBack = ResHelper.getBitmapRes(page.getContext(), "ssdk_oks_classic_platform_cell_back");
-		int disableBack = ResHelper.getBitmapRes(page.getContext(), "ssdk_oks_classic_platfrom_cell_back_nor");
+		int cellBack = R.getBitmapRes(page.getContext(), "ssdk_oks_classic_platform_cell_back");
+		int disableBack = R.getBitmapRes(page.getContext(), "ssdk_oks_classic_platfrom_cell_back_nor");
 		for (int i = 0; i < logos.length; i++) {
-			ImageView ivLogo = ResHelper.forceCast(llCells[i].getChildAt(0));
-			TextView tvName = ResHelper.forceCast(llCells[i].getChildAt(1));
+			ImageView ivLogo = R.forceCast(llCells[i].getChildAt(0));
+			TextView tvName = R.forceCast(llCells[i].getChildAt(1));
 			if (logos[i] == null) {
 				ivLogo.setVisibility(View.INVISIBLE);
 				tvName.setVisibility(View.INVISIBLE);
@@ -169,7 +170,7 @@ public abstract class PlatformPageAdapter extends ViewPagerAdapter implements On
 				llCells[i].setTag(logos[i]);
 
 				if (logos[i] instanceof CustomerLogo) {
-					CustomerLogo logo = ResHelper.forceCast(logos[i]);
+					CustomerLogo logo = R.forceCast(logos[i]);
 					if (logo.logo != null) {
 						ivLogo.setImageBitmap(logo.logo);
 					} else {
@@ -181,15 +182,15 @@ public abstract class PlatformPageAdapter extends ViewPagerAdapter implements On
 						tvName.setText("");
 					}
 				} else {
-					Platform plat = ResHelper.forceCast(logos[i]);
+					Platform plat = R.forceCast(logos[i]);
 					String name = plat.getName().toLowerCase();
-					int resId = ResHelper.getBitmapRes(ivLogo.getContext(),"ssdk_oks_classic_" + name);
+					int resId = R.getBitmapRes(ivLogo.getContext(),"ssdk_oks_classic_" + name);
 					if (resId > 0) {
 						ivLogo.setImageResource(resId);
 					} else {
 						ivLogo.setImageBitmap(null);
 					}
-					resId = ResHelper.getStringRes(tvName.getContext(), "ssdk_" + name);
+					resId = R.getStringRes(tvName.getContext(), "ssdk_" + name);
 					if (resId > 0) {
 						tvName.setText(resId);
 					} else {
@@ -208,10 +209,10 @@ public abstract class PlatformPageAdapter extends ViewPagerAdapter implements On
 		lastClickTime = time;
 
 		if (v.getTag() instanceof CustomerLogo) {
-			CustomerLogo logo = ResHelper.forceCast(v.getTag());
+			CustomerLogo logo = R.forceCast(v.getTag());
 			page.performCustomLogoClick(v, logo);
 		} else {
-			Platform plat = ResHelper.forceCast(v.getTag());
+			Platform plat = R.forceCast(v.getTag());
 			page.showEditPage(plat);
 		}
 	}
