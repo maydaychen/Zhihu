@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.example.administrator.zhihu.R;
 
-import io.github.maydaychen.mylibrary.activity.BaseActivity;
 
 public class CommentActivity extends BaseActivity {
 
