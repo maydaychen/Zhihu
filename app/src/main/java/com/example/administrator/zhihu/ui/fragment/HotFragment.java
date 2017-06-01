@@ -3,7 +3,9 @@ package com.example.administrator.zhihu.ui.fragment;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,11 +33,13 @@ import butterknife.ButterKnife;
 import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
 
-public class HotFragment extends Fragment {
+public class HotFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.rv_hot)
     RecyclerView rvHot;
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout mSwipeContainer;
 
     private SubscriberOnNextListener<StoryBean> getLatestOnNext;
     private String mParam1;
@@ -181,6 +185,24 @@ public class HotFragment extends Fragment {
 //                        maxStale(1, TimeUnit.SECONDS);//这个是控制缓存的过时时间
 //
 //        my_cache = builder.build();
+
+        mSwipeContainer.setOnRefreshListener(this);
+        // 设置下拉圆圈上的颜色，蓝色、绿色、橙色、红色
+        mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        mSwipeContainer.setDistanceToTriggerSync(300);// 设置手指在屏幕下拉多少距离会触发下拉刷新
+//        mSwipeContainer.setProgressBackgroundColor(R.color.blue); // 设定下拉圆圈的背景
+        mSwipeContainer.setSize(SwipeRefreshLayout.DEFAULT); // 设置圆圈的大小
+
+    }
+
+    public void onRefresh() {
+        new Handler().postDelayed(() -> {
+            // 停止刷新
+            HttpMethods.getInstance().getLatest(
+                    new ProgressSubscriber<>(getLatestOnNext, getActivity()));
+            mSwipeContainer.setRefreshing(false);
+        }, 3000); // 3秒后发送消息，停止刷新
     }
 
     private int findMax(int[] lastPositions) {
