@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/title_blue">
+
+    <!--默认左图片-->
+    <TextView
+        android:id="@+id/iv_left"
+        style="@style/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_keyboard_arrow_left_white_24dp"
+        android:drawablePadding="@dimen/margin_size_4dp"
+        android:textColor="@color/white"/>
+    <!--     android:src="@drawable/ic_keyboard_arrow_left_white_24dp"-->
+
+
+    <!--默认标题内容-->
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/tv_white_24_margin8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!--默认右图-->
+    <TextView
+        android:id="@+id/iv_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/margin_size_10dp"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

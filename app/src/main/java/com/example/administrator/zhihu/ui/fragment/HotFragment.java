@@ -18,8 +18,6 @@ import com.example.administrator.zhihu.R;
 import com.example.administrator.zhihu.adapter.HotAdapter;
 import com.example.administrator.zhihu.bean.StoryBean;
 import com.example.administrator.zhihu.http.HttpMethods;
-import com.example.administrator.zhihu.http.ProgressSubscriber;
-import com.example.administrator.zhihu.http.SubscriberOnNextListener;
 import com.example.administrator.zhihu.ui.activity.ContentActivity;
 import com.google.gson.Gson;
 
@@ -30,6 +28,8 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.github.maydaychen.mylibrary.net.ProgressSubscriber;
+import io.github.maydaychen.mylibrary.net.SubscriberOnNextListener;
 import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
 

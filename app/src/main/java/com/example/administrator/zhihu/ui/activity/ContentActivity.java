@@ -12,13 +12,13 @@ import com.example.administrator.zhihu.R;
 import com.example.administrator.zhihu.bean.CommentBean;
 import com.example.administrator.zhihu.bean.ContentBean;
 import com.example.administrator.zhihu.http.HttpMethods;
-import com.example.administrator.zhihu.http.ProgressSubscriber;
-import com.example.administrator.zhihu.http.SubscriberOnNextListener;
 import com.example.administrator.zhihu.utils;
 import com.loopj.android.image.SmartImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.github.maydaychen.mylibrary.net.ProgressSubscriber;
+import io.github.maydaychen.mylibrary.net.SubscriberOnNextListener;
 
 public class ContentActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
 

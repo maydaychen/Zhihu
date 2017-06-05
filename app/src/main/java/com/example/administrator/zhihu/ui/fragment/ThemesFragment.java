@@ -10,12 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.administrator.zhihu.http.HttpMethods;
-import com.example.administrator.zhihu.http.ProgressSubscriber;
 import com.example.administrator.zhihu.R;
-import com.example.administrator.zhihu.http.SubscriberOnNextListener;
 import com.example.administrator.zhihu.adapter.ThemeAdapter;
 import com.example.administrator.zhihu.bean.ThemeBean;
+import com.example.administrator.zhihu.http.HttpMethods;
 import com.example.administrator.zhihu.ui.activity.ThemeContentActivity;
 
 import java.util.ArrayList;
@@ -25,6 +23,8 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.github.maydaychen.mylibrary.net.ProgressSubscriber;
+import io.github.maydaychen.mylibrary.net.SubscriberOnNextListener;
 
 /**
  * 作者：Administrator on 2016/7/15 16:29

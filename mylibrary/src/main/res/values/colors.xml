@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="window_bg">#ffeef1f3</color>
+    <color name="qqblue">#ff54acea</color>
+    <color name="transparent">#00000000</color>
+    
+    <color name="color_black">#FF000000</color>
+    <color name="color_white">#39B3FF</color>
+    <color name="color_whites">#FFFFFF</color>
+  	<color name="color_alert_dialog_background">#AA555555</color>
+  	<color name="color_grey">#707070</color>
+  	<color name="color_red">#FF0000</color>
+  	<color name="delete_red">#FF4545</color>
+  	<color name="gray">#808080</color>
+  	<color name="dimgrey">#696969</color>
+  	<color name="xinxiColor">#99D7F8</color>
+  	
+  	<color name="wondersjscontroller_gray">#99cccccc</color>
+  	<color name="wondersjscontroller_bg_title">#ee222222</color>
+  	
+  	<!--<color name="fuxk_base_color_white">#ffffff</color>-->
+    <color name="fuxk_base_divide_line_color">#dcdcdc</color>
+    
+    <!--<color name="red">#fff</color>  -->
+    <color name="blue">#2fb8f2</color>  
+    <color name="blue_1c">#1caafb</color>
+    <color name="huise">#dedede</color>
+    <color name="transparent_red">#dedede</color>
+
+    <color name="main_blue">#39B3FF</color>
+    <color name="line_ee">#eeeeee</color>
+    <color name="tab_selected">#0088b5</color>
+    <color name="title_blue">#00a2e7</color>
+    <color name="background">#f7f7f7</color>
+    <color name="contacts_background">#f2f2f2</color>
+    <color name="gray_99">#999999</color>
+    <color name="text_33">#333333</color>
+    <color name="text_66">#666666</color>
+    <color name="white">#FFFFFF</color>
+    <color name="d6">#d6d6d6</color>
+    <color name="cc">#cccccc</color>
+</resources>
